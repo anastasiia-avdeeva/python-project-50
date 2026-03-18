@@ -1,4 +1,5 @@
 import argparse
+import json
 
 
 def createParser():
@@ -15,9 +16,17 @@ def createParser():
     return parser
 
 
+def parse_json(file_path):
+    with open(file_path) as file:
+        return json.load(file)
+
+
 def main():
     parser = createParser()
-    parser.parse_args()
+    args = parser.parse_args()
+    first_file, second_file = args.first_file, args.second_file
+    file1_dict = parse_json(first_file)
+    file2_dict = parse_json(second_file)
 
 
 if __name__ == '__main__':
