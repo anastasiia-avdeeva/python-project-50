@@ -2,7 +2,8 @@ import argparse
 import json
 
 
-def createParser():
+
+def create_parser():
     parser = argparse.ArgumentParser(
         usage='gendiff [-h] [-f FORMAT] first_file second_file',
         description='Compares two configuration files and shows a difference.')
@@ -22,7 +23,7 @@ def parse_json(file_path):
 
 
 def main():
-    parser = createParser()
+    parser = create_parser()
     args = parser.parse_args()
     first_file, second_file = args.first_file, args.second_file
     file1_dict = parse_json(first_file)
