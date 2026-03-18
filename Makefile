@@ -9,3 +9,6 @@ package-install:
 
 package-reinstall:
 	uv tool install --force dist/*.whl
+
+test:
+	uv run pytest
