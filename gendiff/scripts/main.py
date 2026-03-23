@@ -1,7 +1,6 @@
 import argparse
-import json
 
-from gendiff import generate_diff
+from gendiff import generate_diff, get_file_extension, parse_data
 
 
 def create_parser():
@@ -18,17 +17,21 @@ def create_parser():
     return parser
 
 
-def parse_json(file_path):
-    with open(file_path) as file:
-        return json.load(file)
+def read_file(path: str) -> str:
+    with open(path, mode='r') as f:
+        return f.read()
+
+
+def read_and_parse_file(file_path: str) -> dict:
+    return parse_data(
+        read_file(file_path), extension=get_file_extension(file_path))
 
 
 def main():
     parser = create_parser()
     args = parser.parse_args()
-    first_file, second_file = args.first_file, args.second_file
-    file1_dict = parse_json(first_file)
-    file2_dict = parse_json(second_file)
+    file1_dict = read_and_parse_file(args.first_file)
+    file2_dict = read_and_parse_file(args.second_file)
     print(generate_diff(file1_dict, file2_dict))
 
 
