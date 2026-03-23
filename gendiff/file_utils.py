@@ -1,3 +1,6 @@
+import json
+
+
 def get_file_extension(file_path: str) -> str:
     if not file_path:
         return ""
@@ -11,3 +14,21 @@ def get_file_extension(file_path: str) -> str:
         return ""
 
     return file_name.split(".")[-1]
+
+
+def _parse_json(data: str) -> dict:
+    if not data.strip():
+        return {}
+    return json.loads(data)
+
+
+PARSERS = {'json': _parse_json}
+
+
+def parse_data(data: str, extension: str) -> dict:
+    parser = PARSERS.get(extension)
+
+    if not parser:
+        raise ValueError(f'Unsupported extension: {extension}')
+
+    return parser(data)

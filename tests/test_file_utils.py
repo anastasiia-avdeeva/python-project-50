@@ -1,6 +1,6 @@
 import pytest
 
-from gendiff import get_file_extension
+from gendiff import get_file_extension, parse_data
 
 
 @pytest.fixture
@@ -41,3 +41,26 @@ def test_get_file_extension_complex_path(complex_path):
 
 def test_get_file_extension_hidden_file(path_to_hidden_file):
     assert get_file_extension(path_to_hidden_file) == ''
+
+
+@pytest.fixture
+def data_from_json():
+    return '{"language": "Python", "version": 3.11}'
+
+
+def test_parse_data_json(data_from_json):
+    assert parse_data(data_from_json, 'json') == {
+        'language': 'Python', 'version': 3.11}
+
+
+def test_parse_data_empty_json():
+    assert parse_data('{}', 'json') == {}
+
+
+def test_parse_data_0b_json():
+    assert parse_data(' ', 'json') == {}
+
+
+def test_parse_data_usupported_ext(data_from_json):
+    with pytest.raises(ValueError):
+        parse_data(data_from_json, 'txt')
