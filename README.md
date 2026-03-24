@@ -1,6 +1,7 @@
 # Diff generator
 
-### Hexlet tests and linter status:
+## Hexlet tests and linter status
+
 [![Actions Status](https://github.com/anastasiia-avdeeva/python-project-50/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/anastasiia-avdeeva/python-project-50/actions)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=anastasiia-avdeeva_python-project-50&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=anastasiia-avdeeva_python-project-50)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=anastasiia-avdeeva_python-project-50&metric=bugs)](https://sonarcloud.io/summary/new_code?id=anastasiia-avdeeva_python-project-50)
@@ -30,11 +31,11 @@ ___
 
 This project was built using these tools:
 
-| Tool                                                                   | Description                                             |
-|------------------------------------------------------------------------|---------------------------------------------------------|
+| Tool                                                                   | Description                                                             |
+|------------------------------------------------------------------------|-------------------------------------------------------------------------|
 | [uv](https://docs.astral.sh/uv/)                                       | "An extremely fast Python package and project manager, written in Rust" |
-| [Pytest](https://pytest.org)                                           | "A mature full-featured Python testing tool"            |
-| [ruff](https://docs.astral.sh/ruff/)                                   | "An extremely fast Python linter and code formatter, written in Rust" |
+| [Pytest](https://pytest.org)                                           | "A mature full-featured Python testing tool"                            |
+| [ruff](https://docs.astral.sh/ruff/)                                   | "An extremely fast Python linter and code formatter, written in Rust"   |
 
 ___
 
