@@ -26,5 +26,6 @@ jobs:
           args: >
             -Dsonar.projectKey=anastasiia-avdeeva_python-project-50
             -Dsonar.organization=anastasiia-avdeeva
-            -Dsonar.python.coverage.reportPaths=coverage.xml
+            -Dsonar.sources=gendiff
             -Dsonar.tests=tests
+            -Dsonar.python.coverage.reportPaths=coverage.xml
