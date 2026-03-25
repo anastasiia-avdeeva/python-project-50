@@ -28,10 +28,8 @@ def _parse_yaml(data: str) -> dict:
 
 YAML_EXTENSIONS = ('yaml', 'yml')
 
-PARSERS = {
-    'json': _parse_json,
-    **{ext: _parse_yaml for ext in YAML_EXTENSIONS}
-}
+PARSERS = {'json': _parse_json}
+PARSERS.update(dict.fromkeys(YAML_EXTENSIONS, _parse_yaml))
 
 
 def parse_data(data: str, extension: str) -> dict:
