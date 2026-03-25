@@ -1,22 +1,31 @@
 PREFIXES = {'added': '+ ', 'removed': '- ', 'unchanged': '  '}
 
 
+def _transform_val(value):
+    from_to = {None: 'null', True: 'true', False: 'false'}
+    return from_to.get(value, value)
+
+
 def _build_diff(dict1, dict2, all_keys):
     diff = []
     for key in all_keys:
         if key not in dict1:
-            info = {'key': key, 'type': 'added', 'val': dict2[key]}
+            info = {'key': key, 'type': 'added',
+                    'val': _transform_val(dict2[key])}
 
         elif key not in dict2:
-            info = {'key': key, 'type': 'removed', 'val': dict1[key]}
+            info = {'key': key, 'type': 'removed',
+                    'val': _transform_val(dict1[key])}
 
         elif dict1[key] == dict2[key]:
             info = {'key': key, 'type': 'unchanged',
-                    'val': dict1[key]}
+                    'val': _transform_val(dict1[key])}
 
         else:
             info = {'key': key, 'type': 'changed',
-                    'old_val': dict1[key], 'new_val': dict2[key]}
+                    'old_val': _transform_val(dict1[key]),
+                    'new_val': _transform_val(dict2[key])
+                    }
 
         diff.append(info)
     return diff
