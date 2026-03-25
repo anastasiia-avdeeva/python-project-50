@@ -26,7 +26,7 @@ ___
 
 Example of CLI usage:
 [![asciicast](https://asciinema.org/a/qh6hHZkU4DRdcWHq.svg)](https://asciinema.org/a/qh6hHZkU4DRdcWHq)
-[![asciicast](https://asciinema.org/a/bi5rV7WI21mBN2oA.svg)](https://asciinema.org/a/bi5rV7WI21mBN2oA)
+[![asciicast](https://asciinema.org/a/PgkbQxqF1zWqcU5Y.svg)](https://asciinema.org/a/PgkbQxqF1zWqcU5Y)
 
 ___
 
