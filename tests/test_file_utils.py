@@ -44,23 +44,46 @@ def test_get_file_extension_hidden_file(path_to_hidden_file):
 
 
 @pytest.fixture
-def data_from_json():
-    return '{"language": "Python", "version": 3.11}'
+def data():
+    data = {
+        'json': '''{"language": "Python",
+"version": 3.11, "follow": false, "timeout": 40}''',
+        'yaml': """language: Python
+version: 3.11
+follow: false
+"timeout": 40
+"""
+    }
+    return data
 
 
-def test_parse_data_json(data_from_json):
-    assert parse_data(data_from_json, 'json') == {
-        'language': 'Python', 'version': 3.11}
+@pytest.fixture
+def expected_dict():
+    return {
+        'language': 'Python',
+        'version': 3.11,
+        'follow': False,
+        'timeout': 40
+    }
 
 
-def test_parse_data_empty_json():
+def test_parse_data(data, expected_dict):
+    assert parse_data(data['json'], 'json') == expected_dict
+    assert parse_data(data['yaml'], 'yaml') == expected_dict
+    assert parse_data(data['yaml'], 'yml') == parse_data(data['yaml'], 'yaml')
+    assert parse_data(data['json'], 'json') == parse_data(data['yaml'], 'yml')
+
+
+def test_parse_data_dict():
     assert parse_data('{}', 'json') == {}
+    assert parse_data('{}', 'yml') == {}
 
 
-def test_parse_data_0b_json():
+def test_parse_data_0b():
     assert parse_data(' ', 'json') == {}
+    assert parse_data(' ', 'yaml') == {}
 
 
-def test_parse_data_usupported_ext(data_from_json):
+def test_parse_data_usupported_ext(data):
     with pytest.raises(ValueError):
-        parse_data(data_from_json, 'txt')
+        parse_data(data['yaml'], 'txt')

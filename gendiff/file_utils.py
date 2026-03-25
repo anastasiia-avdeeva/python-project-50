@@ -1,5 +1,7 @@
 import json
 
+import yaml
+
 
 def get_file_extension(file_path: str) -> str:
     if not file_path:
@@ -17,12 +19,19 @@ def get_file_extension(file_path: str) -> str:
 
 
 def _parse_json(data: str) -> dict:
-    if not data.strip():
-        return {}
     return json.loads(data)
 
 
-PARSERS = {'json': _parse_json}
+def _parse_yaml(data: str) -> dict:
+    return yaml.safe_load(data)
+
+
+YAML_EXTENSIONS = ('yaml', 'yml')
+
+PARSERS = {
+    'json': _parse_json,
+    **{ext: _parse_yaml for ext in YAML_EXTENSIONS}
+}
 
 
 def parse_data(data: str, extension: str) -> dict:
@@ -30,5 +39,8 @@ def parse_data(data: str, extension: str) -> dict:
 
     if not parser:
         raise ValueError(f'Unsupported extension: {extension}')
+
+    if not data.strip():
+        return {}
 
     return parser(data)
