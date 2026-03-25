@@ -4,7 +4,7 @@ from gendiff import generate_diff
 
 
 @pytest.fixture
-def first_dict():
+def dict1_flat():
     return {
         "host": "hexlet.io",
         "timeout": 50,
@@ -15,7 +15,7 @@ def first_dict():
 
 
 @pytest.fixture
-def second_dict():
+def dict2_flat():
     return {
         "timeout": 20,
         "verbose": True,
@@ -23,7 +23,7 @@ def second_dict():
     }
 
 
-def test_generate_diff_flat(first_dict, second_dict):
+def test_generate_diff_flat(dict1_flat, dict2_flat):
     expected = '''{
   - baz: null
   - follow: false
@@ -33,27 +33,27 @@ def test_generate_diff_flat(first_dict, second_dict):
   + timeout: 20
   + verbose: true
 }'''
-    assert generate_diff(first_dict, second_dict) == expected
-    assert first_dict == {
+    assert generate_diff(dict1_flat, dict2_flat) == expected
+    assert dict1_flat == {
         "host": "hexlet.io",
         "timeout": 50,
         "proxy": "123.234.53.22",
         "follow": False,
         "baz": None
     }
-    assert second_dict == {
+    assert dict2_flat == {
         "timeout": 20,
         "verbose": True,
         "host": "hexlet.io"
     }
 
 
-def test_generate_diff_flat_empty_dicts():
+def test_generate_diff_empty_dicts():
     expected = '{\n}'
     assert generate_diff({}, {}) == expected
 
 
-def test_generate_diff_one_flat_empty_dict(first_dict):
+def test_generate_diff_one_empty_dict(dict1_flat):
     expected = '''{
   - baz: null
   - follow: false
@@ -62,4 +62,4 @@ def test_generate_diff_one_flat_empty_dict(first_dict):
   - timeout: 50
 }'''
 
-    assert generate_diff(first_dict, {}) == expected
+    assert generate_diff(dict1_flat, {}) == expected
