@@ -48,17 +48,26 @@ def data():
     data = {
         'json': '''{"language": "Python",
 "version": 3.11, "follow": false, "timeout": 40}''',
-        'yaml': """language: Python
+        'json_nested': '''{"common": {"Follow": false, "setting3": null, 
+"key": 123}, "group3": {"deep": {"id": {"number": 45}}}}''',
+        'yaml': '''language: Python
 version: 3.11
 follow: false
-"timeout": 40
-"""
+"timeout": 40''',
+        'yaml_nested': '''common:
+  Follow: false
+  setting3: null
+  key: 123
+group3:
+  deep:
+    id:
+      number: 45'''
     }
     return data
 
 
 @pytest.fixture
-def expected_dict():
+def expected_dict_flat():
     return {
         'language': 'Python',
         'version': 3.11,
@@ -67,14 +76,42 @@ def expected_dict():
     }
 
 
-def test_parse_data(data, expected_dict):
-    assert parse_data(data['json'], 'json') == expected_dict
-    assert parse_data(data['yaml'], 'yaml') == expected_dict
+@pytest.fixture
+def expected_dict_nested():
+    return {
+        "common": {
+            "Follow": False,
+            "setting3": None,
+            "key": 123
+        },
+        "group3": {
+            "deep": {
+                "id": {
+                    "number": 45
+                }
+            }
+        }
+    }
+
+
+def test_parse_flat_data(data, expected_dict_flat):
+    assert parse_data(data['json'], 'json') == expected_dict_flat
+    assert parse_data(data['yaml'], 'yaml') == expected_dict_flat
     assert parse_data(data['yaml'], 'yml') == parse_data(data['yaml'], 'yaml')
     assert parse_data(data['json'], 'json') == parse_data(data['yaml'], 'yml')
 
 
-def test_parse_data_dict():
+def test_parse_nested_data(data, expected_dict_nested):
+    assert parse_data(data['json_nested'], 'json') == expected_dict_nested
+    assert parse_data(data['yaml_nested'], 'yaml') == expected_dict_nested
+    assert parse_data(data['yaml_nested'], 'yml') == parse_data(
+        data['yaml_nested'], 'yaml')
+    assert parse_data(data['json_nested'], 'json') == parse_data(
+        data['yaml_nested'], 'yml')
+    return
+
+
+def test_parse_data_empty_dict():
     assert parse_data('{}', 'json') == {}
     assert parse_data('{}', 'yml') == {}
 
