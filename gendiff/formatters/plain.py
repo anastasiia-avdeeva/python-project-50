@@ -1,4 +1,4 @@
-from typing import Union, cast
+from typing import Union
 
 from .formatters_utils import _transform_val
 
@@ -34,7 +34,7 @@ def format_plain(diff: list[dict], parents: str = '') -> str:
             line = f"Property '{path}' was added with value: {formatted_val}"
 
         elif node_type == "updated":
-            old_val, new_val = cast(tuple, value)
+            old_val, new_val = item['val']
             formatted_old = _format_val(old_val)
             formatted_new = _format_val(new_val)
             line = f"Property '{path}' was updated. "
