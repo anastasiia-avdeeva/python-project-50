@@ -18,7 +18,7 @@ def _build_diff(dict1, dict2):
             info['val'] = dict1[key]
 
         else:
-            info = {'key': key, 'type': 'changed'}
+            info = {'key': key, 'type': 'updated'}
             if isinstance(dict1[key], dict) and isinstance(dict2[key], dict):
                 info['type'] = 'nested'
                 info['children'] = _build_diff(dict1[key], dict2[key])

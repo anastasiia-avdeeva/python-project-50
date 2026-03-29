@@ -35,7 +35,7 @@ def format_stylish(diff, depth=1):
             value_str = format_stylish(children, depth + 1)
             line = f'{indent}{prefix}{key}: {value_str}'
 
-        elif node_type == 'changed':
+        elif node_type == 'updated':
             prefix = PREFIXES['removed']
             old_val, new_val = value
             str1 = f'{indent}{prefix}{key}: {_format_val(old_val, depth + 1)}'
