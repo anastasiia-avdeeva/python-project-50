@@ -1,4 +1,4 @@
-from .formatters import stylish
+from .formatters import plain, stylish
 
 
 def _build_diff(dict1, dict2):
@@ -31,6 +31,7 @@ def _build_diff(dict1, dict2):
 
 FORMATTERS = {
     'stylish': stylish,
+    'plain': plain
 }
 
 
