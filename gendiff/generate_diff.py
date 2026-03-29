@@ -1,7 +1,7 @@
 from .formatters import plain, stylish
 
 
-def _build_diff(dict1, dict2):
+def _build_diff(dict1: dict, dict2: dict) -> list:
     all_keys = sorted(set(dict1.keys()).union(dict2.keys()))
     diff = []
     for key in all_keys:
@@ -35,7 +35,9 @@ FORMATTERS = {
 }
 
 
-def generate_diff(dict1, dict2, format_name='stylish'):
+def generate_diff(dict1: dict, dict2: dict,
+                  format_name: str = 'stylish') -> str:
+
     diff = _build_diff(dict1, dict2)
     formatter = FORMATTERS[format_name]
     return formatter(diff)
