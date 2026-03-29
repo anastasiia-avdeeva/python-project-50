@@ -28,9 +28,9 @@ def format_stylish(diff, depth=1):
         node_type = item['type']
         key = item['key']
         value = item.get('val')
-        children = item.get('children')
 
         if node_type == 'nested':
+            children = item.get('children')
             prefix = PREFIXES["nested"]
             value_str = format_stylish(children, depth + 1)
             line = f'{indent}{prefix}{key}: {value_str}'
