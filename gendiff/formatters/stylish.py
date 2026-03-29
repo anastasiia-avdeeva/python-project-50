@@ -1,11 +1,8 @@
+from .formatters_utils import _transform_val
+
 PREFIXES = {'added': '+ ', 'removed': '- ', 'unchanged': '  ', 'nested': '  '}
 INDENT = 4
 SIGN_OFFSET = 2
-
-
-def _transform_val(value):
-    from_to = {None: 'null', True: 'true', False: 'false'}
-    return from_to.get(value, value)
 
 
 def _format_val(value, depth):
