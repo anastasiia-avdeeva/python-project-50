@@ -1,7 +1,9 @@
+from typing import Union, cast
+
 from .formatters_utils import _transform_val
 
 
-def _format_val(value):
+def _format_val(value: Union[dict, str, bool, int, float, None]) -> str:
     if isinstance(value, dict):
         return "[complex value]"
 
@@ -14,7 +16,7 @@ def _format_val(value):
     return f"'{transformed}'"
 
 
-def format_plain(diff, parents='') -> str:
+def format_plain(diff: list[dict], parents: str = '') -> str:
     lines = []
     for item in diff:
         node_type = item['type']
@@ -23,7 +25,7 @@ def format_plain(diff, parents='') -> str:
         path = parents + "." + key if parents else key
 
         if node_type == "nested":
-            children = item.get("children")
+            children = item.get("children", [])
             lines.extend(format_plain(children, path).split("\n"))
             continue
 
@@ -32,7 +34,7 @@ def format_plain(diff, parents='') -> str:
             line = f"Property '{path}' was added with value: {formatted_val}"
 
         elif node_type == "updated":
-            old_val, new_val = value
+            old_val, new_val = cast(tuple, value)
             formatted_old = _format_val(old_val)
             formatted_new = _format_val(new_val)
             line = f"Property '{path}' was updated. "
