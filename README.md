@@ -53,7 +53,7 @@ ___
 1. Clone repository
 
     ```bash
-    git clone git@github.com:anastasiia-avdeeva/python-project-49.git
+    git clone git@github.com:anastasiia-avdeeva/python-project-50.git
     ```
 
 2. Install dependencies
