@@ -1,3 +1,5 @@
+from typing import Union
+
 from .formatters_utils import _transform_val
 
 PREFIXES = {'added': '+ ', 'removed': '- ', 'unchanged': '  ', 'nested': '  '}
@@ -5,7 +7,7 @@ INDENT = 4
 SIGN_OFFSET = 2
 
 
-def _format_val(value, depth):
+def _format_val(value: Union[dict, str, bool, int, float, None], depth: int):
     if not isinstance(value, dict):
         return _transform_val(value)
 
@@ -21,7 +23,7 @@ def _format_val(value, depth):
     return '\n'.join(lines)
 
 
-def format_stylish(diff, depth=1):
+def format_stylish(diff: list[dict], depth: int = 1):
     indent = ' ' * (depth * INDENT - SIGN_OFFSET)
     lines = ['{']
     for item in diff:
@@ -30,14 +32,14 @@ def format_stylish(diff, depth=1):
         value = item.get('val')
 
         if node_type == 'nested':
-            children = item.get('children')
+            children = item.get('children', [])
             prefix = PREFIXES["nested"]
             value_str = format_stylish(children, depth + 1)
             line = f'{indent}{prefix}{key}: {value_str}'
 
         elif node_type == 'updated':
             prefix = PREFIXES['removed']
-            old_val, new_val = value
+            old_val, new_val = item['value']
             str1 = f'{indent}{prefix}{key}: {_format_val(old_val, depth + 1)}'
             prefix = PREFIXES['added']
             str2 = f'{indent}{prefix}{key}: {_format_val(new_val, depth + 1)}'
