@@ -1,7 +1,7 @@
 from .formatters_utils import _transform_val
 
 
-def format_val(value):
+def _format_val(value):
     if isinstance(value, dict):
         return "[complex value]"
 
@@ -28,13 +28,13 @@ def format_plain(diff, parents='') -> str:
             continue
 
         elif node_type == "added":
-            formatted_val = format_val(value)
+            formatted_val = _format_val(value)
             line = f"Property '{path}' was added with value: {formatted_val}"
 
         elif node_type == "updated":
             old_val, new_val = value
-            formatted_old = format_val(old_val)
-            formatted_new = format_val(new_val)
+            formatted_old = _format_val(old_val)
+            formatted_new = _format_val(new_val)
             line = f"Property '{path}' was updated. "
             line += f"From {formatted_old} to {formatted_new}"
 
