@@ -1,7 +1,7 @@
 from .formatters import plain, stylish
 
 
-def _build_diff(dict1: dict, dict2: dict) -> list:
+def _build_diff(dict1: dict, dict2: dict) -> list[dict]:
     all_keys = sorted(set(dict1.keys()).union(dict2.keys()))
     diff = []
     for key in all_keys:
