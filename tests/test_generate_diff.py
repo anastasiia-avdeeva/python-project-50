@@ -210,3 +210,8 @@ Property 'group3' was added with value: [complex value]"""
 def test_generate_diff_plain_nested(dict1_nested, dict2_nested):
     assert generate_diff(dict1_nested, dict2_nested,
                          'plain') == EXPECTED_NESTED_PLAIN
+
+
+def test_generate_diff_unsupported_format(dict1_nested, dict2_nested):
+    with pytest.raises(ValueError):
+        generate_diff(dict1_nested, dict2_nested, 'any format')
