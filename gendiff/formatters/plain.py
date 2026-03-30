@@ -21,7 +21,7 @@ def format_plain(diff: list[dict], parents: str = '') -> str:
     for item in diff:
         node_type = item['type']
         key = item['key']
-        value = item.get('val')
+        value = item.get('value')
         path = parents + "." + key if parents else key
 
         if node_type == "nested":
@@ -34,7 +34,7 @@ def format_plain(diff: list[dict], parents: str = '') -> str:
             line = f"Property '{path}' was added with value: {formatted_val}"
 
         elif node_type == "updated":
-            old_val, new_val = item['val']
+            old_val, new_val = item['value']
             formatted_old = _format_val(old_val)
             formatted_new = _format_val(new_val)
             line = f"Property '{path}' was updated. "

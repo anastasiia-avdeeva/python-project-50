@@ -29,7 +29,7 @@ def format_stylish(diff: list[dict], depth: int = 1):
     for item in diff:
         node_type = item['type']
         key = item['key']
-        value = item.get('val')
+        value = item.get('value')
 
         if node_type == 'nested':
             children = item.get('children', [])
