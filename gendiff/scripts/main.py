@@ -4,7 +4,7 @@ from typing import Any
 from gendiff import generate_diff, get_file_extension, parse_data
 
 
-def create_parser():
+def create_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         usage='gendiff [-h] [-f FORMAT] first_file second_file',
         description='Compares two configuration files and shows a difference.')
