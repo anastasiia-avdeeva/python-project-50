@@ -27,8 +27,8 @@ ___
 Example of CLI usage:
 [![asciicast](https://asciinema.org/a/qh6hHZkU4DRdcWHq.svg)](https://asciinema.org/a/qh6hHZkU4DRdcWHq)
 [![asciicast](https://asciinema.org/a/PgkbQxqF1zWqcU5Y.svg)](https://asciinema.org/a/PgkbQxqF1zWqcU5Y)
-[![asciicast](https://asciinema.org/a/n5TVzifyzsH12iKJsvg)](https://asciinema.org/a/n5TVzifyzsH12iKJ)
-
+[![asciicast](https://asciinema.org/a/n5TVzifyzsH12iKJ.svg)](https://asciinema.org/a/n5TVzifyzsH12iKJ)
+[![asciicast](https://asciinema.org/a/I3RqAIgg8b4FjH20.svg)](https://asciinema.org/a/I3RqAIgg8b4FjH20)
 ___
 
 ### Links
