@@ -1,4 +1,5 @@
 import argparse
+from typing import Any
 
 from gendiff import generate_diff, get_file_extension, parse_data
 
@@ -23,7 +24,7 @@ def read_file(path: str) -> str:
         return f.read()
 
 
-def read_and_parse_file(file_path: str) -> dict:
+def read_and_parse_file(file_path: str) -> dict[Any, Any]:
     return parse_data(
         read_file(file_path), extension=get_file_extension(file_path))
 

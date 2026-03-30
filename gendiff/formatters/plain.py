@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Any, Union
 
 from .formatters_utils import _transform_val
 
@@ -16,7 +16,7 @@ def _format_val(value: Union[dict, str, bool, int, float, None]) -> str:
     return f"'{transformed}'"
 
 
-def format_plain(diff: list[dict], parents: str = '') -> str:
+def format_plain(diff: list[dict[str, Any]], parents: str = '') -> str:
     lines = []
     for item in diff:
         node_type = item['type']

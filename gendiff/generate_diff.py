@@ -1,7 +1,10 @@
+from typing import Any
+
 from .formatters import plain, stylish
 
 
-def _build_diff(dict1: dict, dict2: dict) -> list[dict]:
+def _build_diff(dict1: dict[Any, Any],
+                dict2: dict[Any, Any]) -> list[dict[str, Any]]:
     all_keys = sorted(set(dict1.keys()).union(dict2.keys()))
     diff = []
     for key in all_keys:
