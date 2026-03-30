@@ -33,8 +33,8 @@ def main() -> None:
     args = parser.parse_args()
     file1_dict = read_and_parse_file(args.first_file)
     file2_dict = read_and_parse_file(args.second_file)
-    format = args.format
-    diff = generate_diff(file1_dict, file2_dict, format)
+    format_name = args.format
+    diff = generate_diff(file1_dict, file2_dict, format_name)
     print(diff)
 
 
