@@ -212,6 +212,179 @@ def test_generate_diff_plain_nested(dict1_nested, dict2_nested):
                          'plain') == EXPECTED_NESTED_PLAIN
 
 
+EXPECTED_FLAT_JSON = '''[
+    {
+        "key": "baz",
+        "type": "removed",
+        "value": null
+    },
+    {
+        "key": "follow",
+        "type": "removed",
+        "value": false
+    },
+    {
+        "key": "host",
+        "type": "unchanged",
+        "value": "hexlet.io"
+    },
+    {
+        "key": "proxy",
+        "type": "removed",
+        "value": "123.234.53.22"
+    },
+    {
+        "key": "timeout",
+        "type": "updated",
+        "value": [
+            50,
+            20
+        ]
+    },
+    {
+        "key": "verbose",
+        "type": "added",
+        "value": true
+    }
+]'''
+
+
+def test_generate_diff_json_flat(dict1_flat, dict2_flat):
+    assert generate_diff(dict1_flat, dict2_flat,
+                         'json') == EXPECTED_FLAT_JSON
+
+
+EXPECTED_NESTED_JSON = '''[
+    {
+        "key": "common",
+        "type": "nested",
+        "children": [
+            {
+                "key": "follow",
+                "type": "added",
+                "value": false
+            },
+            {
+                "key": "setting1",
+                "type": "unchanged",
+                "value": "Value 1"
+            },
+            {
+                "key": "setting2",
+                "type": "removed",
+                "value": 200
+            },
+            {
+                "key": "setting3",
+                "type": "updated",
+                "value": [
+                    true,
+                    null
+                ]
+            },
+            {
+                "key": "setting4",
+                "type": "added",
+                "value": "blah blah"
+            },
+            {
+                "key": "setting5",
+                "type": "added",
+                "value": {
+                    "key5": "value5"
+                }
+            },
+            {
+                "key": "setting6",
+                "type": "nested",
+                "children": [
+                    {
+                        "key": "doge",
+                        "type": "nested",
+                        "children": [
+                            {
+                                "key": "wow",
+                                "type": "updated",
+                                "value": [
+                                    "",
+                                    "so much"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "key": "key",
+                        "type": "unchanged",
+                        "value": "value"
+                    },
+                    {
+                        "key": "ops",
+                        "type": "added",
+                        "value": "vops"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "key": "group1",
+        "type": "nested",
+        "children": [
+            {
+                "key": "baz",
+                "type": "updated",
+                "value": [
+                    "bas",
+                    "bars"
+                ]
+            },
+            {
+                "key": "foo",
+                "type": "unchanged",
+                "value": "bar"
+            },
+            {
+                "key": "nest",
+                "type": "updated",
+                "value": [
+                    {
+                        "key": "value"
+                    },
+                    "str"
+                ]
+            }
+        ]
+    },
+    {
+        "key": "group2",
+        "type": "removed",
+        "value": {
+            "abc": 12345,
+            "deep": {
+                "id": 45
+            }
+        }
+    },
+    {
+        "key": "group3",
+        "type": "added",
+        "value": {
+            "deep": {
+                "id": {
+                    "number": 45
+                }
+            },
+            "fee": 100500
+        }
+    }
+]'''
+
+
+def test_generate_diff_json_nested(dict1_nested, dict2_nested):
+    assert generate_diff(dict1_nested, dict2_nested,
+                         'json') == EXPECTED_NESTED_JSON
+
+
 def test_generate_diff_unsupported_format(dict1_nested, dict2_nested):
     with pytest.raises(ValueError):
         generate_diff(dict1_nested, dict2_nested, 'any format')
