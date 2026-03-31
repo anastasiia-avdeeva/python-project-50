@@ -1,6 +1,6 @@
 from typing import Any
 
-from .formatters import plain, stylish
+from .formatters import format_json, format_plain, format_stylish
 
 
 def _build_diff(dict1: dict[Any, Any],
@@ -33,8 +33,9 @@ def _build_diff(dict1: dict[Any, Any],
 
 
 FORMATTERS = {
-    'stylish': stylish,
-    'plain': plain
+    'stylish': format_stylish,
+    'plain': format_plain,
+    'json': format_json
 }
 
 
@@ -44,5 +45,5 @@ def generate_diff(dict1: dict, dict2: dict,
     diff = _build_diff(dict1, dict2)
     formatter = FORMATTERS.get(format_name)
     if formatter is None:
-        raise ValueError(f'Ubsupported format type: {format_name}')
+        raise ValueError(f'Unsupported format type: {format_name}')
     return formatter(diff)
