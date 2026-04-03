@@ -48,7 +48,7 @@ def test_get_file_extension_hidden_file(path_to_hidden_file):
 # tests for read_and_parse_file
 @pytest.fixture
 def test_data_dir():
-    return './tests/test_data'
+    return './tests/test_data/'
 
 
 EXPECTED_JSON = {
