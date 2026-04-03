@@ -1,8 +1,10 @@
 import pytest
 
-from gendiff import get_file_extension, parse_data
+# from gendiff import read_and_parse_file
+from gendiff.file_utils import get_file_extension, read_and_parse_file
 
 
+# tests for get_file_extensions
 @pytest.fixture
 def path():
     return '/lib/hello.json'
@@ -43,84 +45,48 @@ def test_get_file_extension_hidden_file(path_to_hidden_file):
     assert get_file_extension(path_to_hidden_file) == ''
 
 
+# tests for read_and_parse_file
 @pytest.fixture
-def data():
-    data = {
-        'json': '''{"language": "Python",
-"version": 3.11, "follow": false, "timeout": 40}''',
-        'json_nested': '''{"common": {"Follow": false, "setting3": null, 
-"key": 123}, "group3": {"deep": {"id": {"number": 45}}}}''',
-        'yaml': '''language: Python
-version: 3.11
-follow: false
-"timeout": 40''',
-        'yaml_nested': '''common:
-  Follow: false
-  setting3: null
-  key: 123
-group3:
-  deep:
-    id:
-      number: 45'''
-    }
-    return data
+def test_data_dir():
+    return './tests/test_data'
 
 
-@pytest.fixture
-def expected_dict_flat():
-    return {
-        'language': 'Python',
-        'version': 3.11,
-        'follow': False,
-        'timeout': 40
-    }
+EXPECTED_JSON = {
+    "host": "hexlet.io",
+    "timeout": 50,
+    "proxy": "123.234.53.22",
+    "follow": False
+}
+
+EXPECTED_YML = {
+    "timeout": 20,
+    "verbose": True,
+    "host": "hexlet.io"
+}
 
 
-@pytest.fixture
-def expected_dict_nested():
-    return {
-        "common": {
-            "Follow": False,
-            "setting3": None,
-            "key": 123
-        },
-        "group3": {
-            "deep": {
-                "id": {
-                    "number": 45
-                }
-            }
-        }
-    }
+def test_read_and_parse_json(test_data_dir):
+    json_path = test_data_dir + 'file1.json'
+    assert read_and_parse_file(json_path) == EXPECTED_JSON
 
 
-def test_parse_flat_data(data, expected_dict_flat):
-    assert parse_data(data['json'], 'json') == expected_dict_flat
-    assert parse_data(data['yaml'], 'yaml') == expected_dict_flat
-    assert parse_data(data['yaml'], 'yml') == parse_data(data['yaml'], 'yaml')
-    assert parse_data(data['json'], 'json') == parse_data(data['yaml'], 'yml')
+def test_read_and_parse_yml(test_data_dir):
+    yml_path = test_data_dir + 'file2.yml'
+    assert read_and_parse_file(yml_path) == EXPECTED_YML
 
 
-def test_parse_nested_data(data, expected_dict_nested):
-    assert parse_data(data['json_nested'], 'json') == expected_dict_nested
-    assert parse_data(data['yaml_nested'], 'yaml') == expected_dict_nested
-    assert parse_data(data['yaml_nested'], 'yml') == parse_data(
-        data['yaml_nested'], 'yaml')
-    assert parse_data(data['json_nested'], 'json') == parse_data(
-        data['yaml_nested'], 'yml')
-    return
-
-
-def test_parse_data_empty_dict():
-    assert parse_data('{}', 'json') == {}
-    assert parse_data('{}', 'yml') == {}
-
-
-def test_parse_data_0b():
-    assert parse_data(' ', 'json') == {}
-    assert parse_data(' ', 'yaml') == {}
-
-
-def test_parse_data_usupported_ext(data):
+def test_read_and_parse_unsupported_ext(test_data_dir):
+    unsupported_ext_path = test_data_dir + 'unsupported_ext.txt'
     with pytest.raises(ValueError):
-        parse_data(data['yaml'], 'txt')
+        read_and_parse_file(unsupported_ext_path)
+
+
+def test_read_and_parse_empty_file(test_data_dir):
+    empty_file_path = test_data_dir + 'file_empty.yaml'
+    assert read_and_parse_file(empty_file_path) == {}
+
+
+def test_read_and_parse_no_object(test_data_dir):
+    no_obj_path = test_data_dir + 'list.json'
+    with pytest.raises(ValueError):
+        read_and_parse_file(no_obj_path)
