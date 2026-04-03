@@ -1,7 +1,6 @@
 import argparse
-from typing import Any
 
-from gendiff import generate_diff, get_file_extension, parse_data
+from gendiff import generate_diff
 
 
 def create_parser() -> argparse.ArgumentParser:
@@ -19,23 +18,13 @@ def create_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def read_file(path: str) -> str:
-    with open(path, mode='r') as f:
-        return f.read()
-
-
-def read_and_parse_file(file_path: str) -> dict[Any, Any]:
-    return parse_data(
-        read_file(file_path), extension=get_file_extension(file_path))
-
-
 def main() -> None:
     parser = create_parser()
     args = parser.parse_args()
-    file1_dict = read_and_parse_file(args.first_file)
-    file2_dict = read_and_parse_file(args.second_file)
+    file1_path = args.first_file
+    file2_path = args.second_file
     format_name = args.format
-    diff = generate_diff(file1_dict, file2_dict, format_name)
+    diff = generate_diff(file1_path, file2_path, format_name)
     print(diff)
 
 
