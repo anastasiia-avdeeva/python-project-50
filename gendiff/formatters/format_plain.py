@@ -3,14 +3,15 @@ from typing import Any, Union
 from .formatters_utils import _transform_val
 
 
-def _format_val(value: Union[dict, str, bool, int, float, None]) -> str:
+def _format_val(value:
+                Union[dict, str, bool, int, float, None]) -> str | int | float:
     if isinstance(value, dict):
         return "[complex value]"
 
     transformed = _transform_val(value)
     without_quotes = ['true', 'false', 'null']
 
-    if transformed in without_quotes:
+    if transformed in without_quotes or isinstance(transformed, (int, float)):
         return transformed
 
     return f"'{transformed}'"
