@@ -110,7 +110,7 @@ def test_generate_diff_nested_stylish(nested_json_paths, nested_yaml_paths):
 
 EXPECTED_FLAT_PLAIN = """Property 'follow' was removed
 Property 'proxy' was removed
-Property 'timeout' was updated. From '50' to '20'
+Property 'timeout' was updated. From 50 to 20
 Property 'verbose' was added with value: true"""
 
 
