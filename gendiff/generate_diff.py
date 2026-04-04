@@ -1,5 +1,6 @@
 from typing import Any
 
+from .file_utils import read_and_parse_file
 from .formatters import format_json, format_plain, format_stylish
 
 
@@ -39,10 +40,11 @@ FORMATTERS = {
 }
 
 
-def generate_diff(dict1: dict, dict2: dict,
+def generate_diff(file1_path: str, file2_path: str,
                   format_name: str = 'stylish') -> str:
-
-    diff = _build_diff(dict1, dict2)
+    file1_dict = read_and_parse_file(file1_path)
+    file2_dict = read_and_parse_file(file2_path)
+    diff = _build_diff(file1_dict, file2_dict)
     formatter = FORMATTERS.get(format_name)
     if formatter is None:
         raise ValueError(f'Unsupported format type: {format_name}')

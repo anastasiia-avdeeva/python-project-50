@@ -4,27 +4,39 @@ from gendiff import generate_diff
 
 
 @pytest.fixture
-def dict1_flat():
-    return {
-        "host": "hexlet.io",
-        "timeout": 50,
-        "proxy": "123.234.53.22",
-        "follow": False,
-        "baz": None
-    }
+def test_data_dir():
+    return './tests/test_data/'
 
 
 @pytest.fixture
-def dict2_flat():
-    return {
-        "timeout": 20,
-        "verbose": True,
-        "host": "hexlet.io"
-    }
+def flat_json_paths(test_data_dir):
+    json1 = test_data_dir + 'file1.json'
+    json2 = test_data_dir + 'file2.json'
+    return json1, json2
+
+
+@pytest.fixture
+def flat_yaml_paths(test_data_dir):
+    yaml1 = test_data_dir + 'file1.yaml'
+    yaml2 = test_data_dir + 'file2.yml'
+    return yaml1, yaml2
+
+
+@pytest.fixture
+def nested_json_paths(test_data_dir):
+    json1 = test_data_dir + 'file1_nested.json'
+    json2 = test_data_dir + 'file2_nested.json'
+    return json1, json2
+
+
+@pytest.fixture
+def nested_yaml_paths(test_data_dir):
+    yaml1 = test_data_dir + 'file1_nested.yaml'
+    yaml2 = test_data_dir + 'file2_nested.yaml'
+    return yaml1, yaml2
 
 
 EXPECTED_FLAT_STYLISH = '''{
-  - baz: null
   - follow: false
     host: hexlet.io
   - proxy: 123.234.53.22
@@ -34,102 +46,12 @@ EXPECTED_FLAT_STYLISH = '''{
 }'''
 
 
-def test_generate_diff_stylish_flat(dict1_flat, dict2_flat):
-    assert generate_diff(dict1_flat, dict2_flat) == EXPECTED_FLAT_STYLISH
-    assert dict1_flat == {
-        "host": "hexlet.io",
-        "timeout": 50,
-        "proxy": "123.234.53.22",
-        "follow": False,
-        "baz": None
-    }
-    assert dict2_flat == {
-        "timeout": 20,
-        "verbose": True,
-        "host": "hexlet.io"
-    }
-
-
-def test_generate_diff_stylish_empty_dicts_():
-    expected = '{\n}'
-    assert generate_diff({}, {}) == expected
-
-
-def test_generate_diff_stylish_one_empty_dict(dict1_flat):
-    expected = '''{
-  - baz: null
-  - follow: false
-  - host: hexlet.io
-  - proxy: 123.234.53.22
-  - timeout: 50
-}'''
-
-    assert generate_diff(dict1_flat, {}) == expected
-
-
-@pytest.fixture
-def dict1_nested():
-    return {
-        "common": {
-            "setting1": "Value 1",
-            "setting2": 200,
-            "setting3": True,
-            "setting6": {
-                "key": "value",
-                "doge": {
-                    "wow": ""
-                }
-            }
-        },
-        "group1": {
-            "baz": "bas",
-            "foo": "bar",
-            "nest": {
-                "key": "value"
-            }
-        },
-        "group2": {
-            "abc": 12345,
-            "deep": {
-                "id": 45
-            }
-        }
-    }
-
-
-@pytest.fixture
-def dict2_nested():
-    return {
-        "common": {
-            "follow": False,
-            "setting1": "Value 1",
-            "setting3": None,
-            "setting4": "blah blah",
-            "setting5": {
-                "key5": "value5"
-            },
-            "setting6": {
-                "key": "value",
-                "ops": "vops",
-                "doge": {
-                    "wow": "so much"
-                }
-            }
-        },
-        "group1": {
-            "foo": "bar",
-            "baz": "bars",
-            "nest": "str"
-        },
-        "group3": {
-            "deep": {
-                "id": {
-                    "number": 45
-                }
-            },
-            "fee": 100500
-        }
-    }
+def test_generate_diff_flat_stylish(flat_json_paths, flat_yaml_paths):
+    json1_path, json2_path = flat_json_paths
+    assert generate_diff(json1_path, json2_path) == EXPECTED_FLAT_STYLISH
+    yaml1_path, yaml2_path = flat_yaml_paths
+    assert generate_diff(yaml1_path, yaml2_path) == EXPECTED_FLAT_STYLISH
+    assert generate_diff(json1_path, yaml2_path) == EXPECTED_FLAT_STYLISH
 
 
 EXPECTED_NESTED_STYLISH = '''{
@@ -178,19 +100,28 @@ EXPECTED_NESTED_STYLISH = '''{
 }'''
 
 
-def test_generate_diff_stylish_nested(dict1_nested, dict2_nested):
-    assert generate_diff(dict1_nested, dict2_nested) == EXPECTED_NESTED_STYLISH
+def test_generate_diff_nested_stylish(nested_json_paths, nested_yaml_paths):
+    json1_path, json2_path = nested_json_paths
+    assert generate_diff(json1_path, json2_path) == EXPECTED_NESTED_STYLISH
+    yaml1_path, yaml2_path = nested_yaml_paths
+    assert generate_diff(yaml1_path, yaml2_path) == EXPECTED_NESTED_STYLISH
+    assert generate_diff(yaml1_path, json2_path) == EXPECTED_NESTED_STYLISH
 
 
-EXPECTED_FLAT_PLAIN = """Property 'baz' was removed
-Property 'follow' was removed
+EXPECTED_FLAT_PLAIN = """Property 'follow' was removed
 Property 'proxy' was removed
 Property 'timeout' was updated. From '50' to '20'
 Property 'verbose' was added with value: true"""
 
 
-def test_generate_diff_plain_flat(dict1_flat, dict2_flat):
-    assert generate_diff(dict1_flat, dict2_flat,
+def test_generate_diff_flat_plain(flat_json_paths, flat_yaml_paths):
+    json1_path, json2_path = flat_json_paths
+    assert generate_diff(json1_path, json2_path,
+                         'plain') == EXPECTED_FLAT_PLAIN
+    yaml1_path, yaml2_path = flat_yaml_paths
+    assert generate_diff(yaml1_path, yaml2_path,
+                         'plain') == EXPECTED_FLAT_PLAIN
+    assert generate_diff(json1_path, yaml2_path,
                          'plain') == EXPECTED_FLAT_PLAIN
 
 
@@ -207,17 +138,18 @@ Property 'group2' was removed
 Property 'group3' was added with value: [complex value]"""
 
 
-def test_generate_diff_plain_nested(dict1_nested, dict2_nested):
-    assert generate_diff(dict1_nested, dict2_nested,
+def test_generate_diff_nested_plain(nested_json_paths, nested_yaml_paths):
+    json1_path, json2_path = nested_json_paths
+    assert generate_diff(json1_path, json2_path,
+                         'plain') == EXPECTED_NESTED_PLAIN
+    yaml1_path, yaml2_path = nested_yaml_paths
+    assert generate_diff(yaml1_path, yaml2_path,
+                         'plain') == EXPECTED_NESTED_PLAIN
+    assert generate_diff(yaml1_path, json2_path,
                          'plain') == EXPECTED_NESTED_PLAIN
 
 
 EXPECTED_FLAT_JSON = '''[
-    {
-        "key": "baz",
-        "type": "removed",
-        "value": null
-    },
     {
         "key": "follow",
         "type": "removed",
@@ -249,9 +181,12 @@ EXPECTED_FLAT_JSON = '''[
 ]'''
 
 
-def test_generate_diff_json_flat(dict1_flat, dict2_flat):
-    assert generate_diff(dict1_flat, dict2_flat,
-                         'json') == EXPECTED_FLAT_JSON
+def test_generate_diff_json_flat(flat_json_paths, flat_yaml_paths):
+    json1_path, json2_path = flat_json_paths
+    assert generate_diff(json1_path, json2_path, 'json') == EXPECTED_FLAT_JSON
+    yaml1_path, yaml2_path = flat_yaml_paths
+    assert generate_diff(yaml1_path, yaml2_path, 'json') == EXPECTED_FLAT_JSON
+    assert generate_diff(json1_path, yaml2_path, 'json') == EXPECTED_FLAT_JSON
 
 
 EXPECTED_NESTED_JSON = '''[
@@ -380,11 +315,39 @@ EXPECTED_NESTED_JSON = '''[
 ]'''
 
 
-def test_generate_diff_json_nested(dict1_nested, dict2_nested):
-    assert generate_diff(dict1_nested, dict2_nested,
+def test_generate_diff_json_nested(nested_json_paths, nested_yaml_paths):
+    json1_path, json2_path = nested_json_paths
+    assert generate_diff(json1_path, json2_path,
+                         'json') == EXPECTED_NESTED_JSON
+    yaml1_path, yaml2_path = nested_yaml_paths
+    assert generate_diff(yaml1_path, yaml2_path,
+                         'json') == EXPECTED_NESTED_JSON
+    assert generate_diff(yaml1_path, json2_path,
                          'json') == EXPECTED_NESTED_JSON
 
 
-def test_generate_diff_unsupported_format(dict1_nested, dict2_nested):
+def test_generate_diff_empty_files(test_data_dir):
+    file1_path = test_data_dir + 'file_empty.json'
+    file2_path = test_data_dir + 'file_empty.yaml'
+    expected_stylish = '{\n}'
+    assert generate_diff(file1_path, file2_path) == expected_stylish
+    expected_plain = ''
+    assert generate_diff(file1_path, file2_path, 'plain') == expected_plain
+    expected_json = '[]'
+    assert generate_diff(file1_path, file2_path, 'json') == expected_json
+
+
+def test_generate_diff_unsupported_format(flat_json_paths):
+    json1_path, json2_path = flat_json_paths
     with pytest.raises(ValueError):
-        generate_diff(dict1_nested, dict2_nested, 'any format')
+        generate_diff(json1_path, json2_path, 'any format')
+
+
+def test_generate_diff_erronious_files(test_data_dir, flat_json_paths):
+    json1_path, json2_path = flat_json_paths
+    unsupported_ext_file = test_data_dir + 'unsupported_ext.txt'
+    with pytest.raises(ValueError):
+        generate_diff(json1_path, unsupported_ext_file)
+    json_without_obj = test_data_dir + 'list.json'
+    with pytest.raises(ValueError):
+        generate_diff(json_without_obj, json2_path, 'plain')
