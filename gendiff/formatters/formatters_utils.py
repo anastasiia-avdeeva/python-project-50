@@ -1,7 +1,8 @@
 from typing import Union
 
 
-def _transform_val(value: Union[int, float, str, bool, None]) -> str:
+def _transform_val(value:
+                   Union[int, float, str, bool, None]) -> int | float | str:
     match value:
         case None:
             return 'null'
@@ -10,4 +11,4 @@ def _transform_val(value: Union[int, float, str, bool, None]) -> str:
         case False:
             return 'false'
         case _:
-            return str(value)
+            return value
