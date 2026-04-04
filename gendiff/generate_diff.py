@@ -17,7 +17,7 @@ def _build_diff(dict1: dict[Any, Any],
             info = {'key': key, 'type': 'removed'}
             info['value'] = dict1[key]
 
-        elif dict1[key] == dict2[key]:
+        elif dict1[key] == dict2[key] and type(dict1[key]) is type(dict2[key]):
             info = {'key': key, 'type': 'unchanged'}
             info['value'] = dict1[key]
 
